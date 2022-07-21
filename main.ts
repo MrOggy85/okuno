@@ -11,6 +11,7 @@ type Route = {
 const REDIRECTS: Record<string, string> = {
   "/blog": "/blog/",
   "/cv": "/cv/",
+  "/photo": "/photo/",
 };
 
 const ROUTES: Record<string, Route> = {
@@ -24,12 +25,17 @@ const ROUTES: Record<string, Route> = {
     hostname: "resume-nine-self.vercel.app",
     port: "443",
   },
+  "photo": {
+    protocol: "https:",
+    hostname: "photo-blog.deno.dev",
+    port: "443",
+  },
 };
 
 async function handler(req: Request): Promise<Response> {
-  console.log('url', req.url);
-  console.log('referrer', req.referrer);
-  console.log('headers', req.headers);
+  console.log("url", req.url);
+  console.log("referrer", req.referrer);
+  console.log("headers", req.headers);
   const url = new URL(req.url);
 
   const redirect = REDIRECTS[url.pathname];
@@ -38,10 +44,10 @@ async function handler(req: Request): Promise<Response> {
     return Response.redirect(url.href, 307);
   }
 
-  if (url.pathname === '/' || url.pathname.startsWith('/static/')) {
-    url.protocol = 'https:';
-    url.hostname = 'homepage-okuno.deno.dev';
-    url.port = '443';
+  if (url.pathname === "/" || url.pathname.startsWith("/static/")) {
+    url.protocol = "https:";
+    url.hostname = "homepage-okuno.deno.dev";
+    url.port = "443";
     return fetch(url.href, {
       headers: req.headers,
       method: req.method,
@@ -61,7 +67,7 @@ async function handler(req: Request): Promise<Response> {
   url.protocol = route.protocol;
   url.hostname = route.hostname;
   url.port = route.port;
-  const input = url.href.replace(`/${firstPath}/`, '/');
+  const input = url.href.replace(`/${firstPath}/`, "/");
 
   return await fetch(input, {
     headers: req.headers,
