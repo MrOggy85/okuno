@@ -44,23 +44,18 @@ async function handler(req: Request): Promise<Response> {
     return Response.redirect(url.href, 307);
   }
 
-  if (url.pathname === "/" || url.pathname.startsWith("/static/")) {
+  const firstPath = url.pathname.split("/")[1];
+  const route = ROUTES[firstPath];
+
+  if (url.pathname === "/" || url.pathname.startsWith("/static/") || !route) {
     url.protocol = "https:";
     url.hostname = "homepage-okuno.deno.dev";
     url.port = "443";
+
     return fetch(url.href, {
       headers: req.headers,
       method: req.method,
       body: req.body,
-    });
-  }
-
-  const firstPath = url.pathname.split("/")[1];
-  const route = ROUTES[firstPath];
-
-  if (!route) {
-    return new Response("", {
-      status: 404,
     });
   }
 
