@@ -12,6 +12,7 @@ const REDIRECTS: Record<string, string> = {
   "/blog": "/blog/",
   "/cv": "/cv/",
   "/photo": "/photo/",
+  "/album": "/album/",
 };
 
 const ROUTES: Record<string, Route> = {
@@ -25,9 +26,14 @@ const ROUTES: Record<string, Route> = {
     hostname: "resume-nine-self.vercel.app",
     port: "443",
   },
-  "photo": {
+  "album": {
     protocol: "https:",
     hostname: "photo-blog.deno.dev",
+    port: "443",
+  },
+  "photo": {
+    protocol: "https:",
+    hostname: "photo-stream.deno.dev",
     port: "443",
   },
 };
