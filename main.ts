@@ -33,9 +33,12 @@ const ROUTES: Record<string, Route> = {
 };
 
 async function handler(req: Request): Promise<Response> {
-  console.log("url", req.url);
-  console.log("referrer", req.referrer);
-  console.log("headers", req.headers);
+  console.log({
+    url: req.url,
+    referrer: req.referrer ?? req.headers.get("referer"),
+    "user-agent": req.headers.get("user-agent"),
+    "accept-language": req.headers.get("accept-language"),
+  });
   const url = new URL(req.url);
 
   const redirect = REDIRECTS[url.pathname];
@@ -71,5 +74,8 @@ async function handler(req: Request): Promise<Response> {
   });
 }
 
-console.log(`Server is listening on port ${PORT}`);
+console.log("Server started", {
+  port: PORT,
+  DENO_REGION: Deno.env.get("DENO_REGION"),
+});
 await serve(handler, { port: PORT });
